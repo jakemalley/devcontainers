@@ -44,11 +44,27 @@ RUN \
     go install github.com/josharian/impl@v1.4.0 && \
     go install github.com/haya14busa/goplay/cmd/goplay@v1.0.0 && \
     go install github.com/go-delve/delve/cmd/dlv@latest && \
-    go install honnef.co/go/tools/cmd/staticcheck@latest
+    go install honnef.co/go/tools/cmd/staticcheck@latest && \
+    go install github.com/a-h/templ/cmd/templ@latest
+
+# Install other tools
+FROM base AS tools
+RUN \
+    mkdir -p /tools && \
+    ln -s /usr/bin/fdfind /tools/fd && \
+    curl -fsSL "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-arm64" \
+      -o /tools/tailwindcss && \
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_arm64.tar.gz" | tar zxf - -C /tools/ && \
+    curl -fsSL "https://github.com/jqlang/jq/releases/latest/download/jq-linux-amd64" \
+      -o /tools/jq && \
+    curl -fsSL "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64" \
+      -o /tools/yq && \
+    chmod +x /tools/*
 
 # Final stage for the devcontainer
 FROM base AS dev
 COPY --chown=code:code --from=tools-go /home/code/go/bin/* /home/code/go/bin/
+COPY --chown=root:root --from=tools /tools/* /usr/local/bin/
 
 WORKDIR /workspaces
 USER code
