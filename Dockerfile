@@ -65,6 +65,7 @@ RUN \
 FROM base AS dev
 COPY --chown=code:code --from=tools-go /home/code/go/bin/* /home/code/go/bin/
 COPY --chown=root:root --from=tools /tools/* /usr/local/bin/
+COPY ./home/* /home/code/
 
 WORKDIR /workspaces
 USER code
