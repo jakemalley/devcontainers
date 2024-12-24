@@ -13,7 +13,8 @@ COPY --chown=root:root --from=golang /usr/local/go /usr/local/go
 ENV \
     TZ=Europe/London \
     GOPATH=/home/code/go \
-    PATH="${PATH}:/usr/local/go/bin:/home/code/go/bin" \
+    NODEJS_HOME=/usr/local/node \
+    PATH="${PATH}:/usr/local/go/bin:/home/code/go/bin:/usr/local/node/bin" \
     TERM=xterm-256color \
     LANG=en_GB.UTF-8 \
     LC_ALL=en_GB.UTF-8
@@ -45,7 +46,8 @@ RUN \
     go install github.com/haya14busa/goplay/cmd/goplay@v1.0.0 && \
     go install github.com/go-delve/delve/cmd/dlv@latest && \
     go install honnef.co/go/tools/cmd/staticcheck@latest && \
-    go install github.com/a-h/templ/cmd/templ@latest
+    go install github.com/a-h/templ/cmd/templ@latest && \
+    go install github.com/air-verse/air@latest
 
 # Install other tools
 FROM base AS tools
@@ -61,10 +63,21 @@ RUN \
       -o /tools/yq && \
     chmod +x /tools/*
 
+# Install node
+FROM base AS node
+RUN \
+  apt update && \
+  apt install -y xz-utils && \
+  curl -fsSL "https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-arm64.tar.xz" -o "/tmp/node-v22.12.0-linux-arm64.tar.xz" && \
+  mkdir -p /usr/local/node && \
+  tar -xf /tmp/node-v22.12.0-linux-arm64.tar.xz -C /usr/local/node --strip-components=1 && \
+  rm /tmp/node-v22.12.0-linux-arm64.tar.xz
+
 # Final stage for the devcontainer
 FROM base AS dev
 COPY --chown=code:code --from=tools-go /home/code/go/bin/* /home/code/go/bin/
 COPY --chown=root:root --from=tools /tools/* /usr/local/bin/
+COPY --chown=root:root --from=node /usr/local/node /usr/local/node
 COPY ./home/* /home/code/
 
 WORKDIR /workspaces

@@ -31,3 +31,8 @@ build: ## Build the devcontainer image
 release: build ## Build the devcontainer image and tag it as latest
 	docker tag $(IMAGE_NAME):$(BUILD_ID) $(IMAGE_NAME):latest
 
+##@ Debug
+
+.PHONY: shell
+shell: ## Run a shell in the image
+	docker run --rm -it $(IMAGE_NAME):$(BUILD_ID) bash
