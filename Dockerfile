@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=library/debian
 ARG BASE_IMAGE_TAG=stable-slim
 
-ARG GO_VERSION=1.23.4
+ARG GO_VERSION=1.24.4
 
 FROM library/docker:cli AS docker-cli
 FROM library/golang:${GO_VERSION} AS golang
@@ -47,7 +47,8 @@ RUN \
     go install github.com/go-delve/delve/cmd/dlv@latest && \
     go install honnef.co/go/tools/cmd/staticcheck@latest && \
     go install github.com/a-h/templ/cmd/templ@latest && \
-    go install github.com/air-verse/air@latest
+    go install github.com/air-verse/air@latest && \
+    go install github.com/go-task/task/v3/cmd/task@latest
 
 # Install other tools
 FROM base AS tools
@@ -78,7 +79,7 @@ FROM base AS dev
 COPY --chown=code:code --from=tools-go /home/code/go/bin/* /home/code/go/bin/
 COPY --chown=root:root --from=tools /tools/* /usr/local/bin/
 COPY --chown=root:root --from=node /usr/local/node /usr/local/node
-COPY ./home/* /home/code/
+COPY --chown=code:code ./home/* /home/code/
 
 WORKDIR /workspaces
 USER code
