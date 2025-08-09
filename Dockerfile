@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=library/debian
 ARG BASE_IMAGE_TAG=stable-slim
 
-ARG GO_VERSION=1.24.4
+ARG GO_VERSION=1.24.6
 
 FROM library/docker:cli AS docker-cli
 FROM library/golang:${GO_VERSION} AS golang
@@ -26,7 +26,7 @@ RUN \
     echo "${LANG} UTF-8" > /etc/locale.gen && \
     echo "LANG=${LANG}" > /etc/locale.conf && \
     apt update && apt -y full-upgrade && \
-    apt install -y bash sudo curl wget make git fd-find ca-certificates locales tzdata && \
+    apt install -y bash sudo curl wget make git fd-find sqlite3 ca-certificates locales tzdata && \
     apt clean all && rm -rf /var/lib/apt/lists && \
     locale-gen $LANG && \
     groupadd -g 500 --system code && \
@@ -66,13 +66,14 @@ RUN \
 
 # Install node
 FROM base AS node
+ARG NODE_VERSION=v22.17.0
 RUN \
   apt update && \
   apt install -y xz-utils && \
-  curl -fsSL "https://nodejs.org/dist/v22.12.0/node-v22.12.0-linux-arm64.tar.xz" -o "/tmp/node-v22.12.0-linux-arm64.tar.xz" && \
+  curl -fsSL "https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-arm64.tar.xz" -o "/tmp/node-${NODE_VERSION}-linux-arm64.tar.xz" && \
   mkdir -p /usr/local/node && \
-  tar -xf /tmp/node-v22.12.0-linux-arm64.tar.xz -C /usr/local/node --strip-components=1 && \
-  rm /tmp/node-v22.12.0-linux-arm64.tar.xz
+  tar -xf /tmp/node-${NODE_VERSION}-linux-arm64.tar.xz -C /usr/local/node --strip-components=1 && \
+  rm /tmp/node-${NODE_VERSION}-linux-arm64.tar.xz
 
 # Final stage for the devcontainer
 FROM base AS dev
