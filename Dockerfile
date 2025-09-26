@@ -1,7 +1,7 @@
 ARG BASE_IMAGE=library/debian
 ARG BASE_IMAGE_TAG=stable-slim
 
-ARG GO_VERSION=1.24.6
+ARG GO_VERSION=1.25.1
 
 FROM library/docker:cli AS docker-cli
 FROM library/golang:${GO_VERSION} AS golang
@@ -48,21 +48,29 @@ RUN \
     go install honnef.co/go/tools/cmd/staticcheck@latest && \
     go install github.com/a-h/templ/cmd/templ@latest && \
     go install github.com/air-verse/air@latest && \
-    go install github.com/go-task/task/v3/cmd/task@latest
+    go install github.com/go-task/task/v3/cmd/task@latest && \
+    go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
 # Install other tools
 FROM base AS tools
+# Installing unzip so we can download (and unzip!) some of the tools
 RUN \
-    mkdir -p /tools && \
-    ln -s /usr/bin/fdfind /tools/fd && \
+    apt update && apt install -y unzip && \
+    apt clean all && rm -rf /var/lib/apt/lists
+
+RUN \
+    mkdir -p /tools/bin /tools/include && \
+    ln -s /usr/bin/fdfind /tools/bin/fd && \
     curl -fsSL "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-arm64" \
-      -o /tools/tailwindcss && \
-    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_arm64.tar.gz" | tar zxf - -C /tools/ && \
+      -o /tools/bin/tailwindcss && \
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_arm64.tar.gz" | tar zxf - -C /tools/bin/ && \
     curl -fsSL "https://github.com/jqlang/jq/releases/latest/download/jq-linux-amd64" \
-      -o /tools/jq && \
+      -o /tools/bin/jq && \
     curl -fsSL "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64" \
-      -o /tools/yq && \
-    chmod +x /tools/*
+      -o /tools/bin/yq && \
+    curl -fsSL "https://github.com/protocolbuffers/protobuf/releases/download/v30.2/protoc-30.2-linux-x86_64.zip" \
+       -o /tmp/protoc-30.2-linux-x86_64.zip && unzip /tmp/protoc-30.2-linux-x86_64.zip -d /tools && \
+    chmod +x /tools/bin/*
 
 # Install node
 FROM base AS node
@@ -78,7 +86,8 @@ RUN \
 # Final stage for the devcontainer
 FROM base AS dev
 COPY --chown=code:code --from=tools-go /home/code/go/bin/* /home/code/go/bin/
-COPY --chown=root:root --from=tools /tools/* /usr/local/bin/
+COPY --chown=root:root --from=tools /tools/include /usr/local/include/
+COPY --chown=root:root --from=tools /tools/bin /usr/local/bin/
 COPY --chown=root:root --from=node /usr/local/node /usr/local/node
 COPY --chown=code:code ./home/* /home/code/
 
