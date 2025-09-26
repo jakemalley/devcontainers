@@ -26,7 +26,7 @@ RUN \
     echo "${LANG} UTF-8" > /etc/locale.gen && \
     echo "LANG=${LANG}" > /etc/locale.conf && \
     apt update && apt -y full-upgrade && \
-    apt install -y bash sudo curl wget make git fd-find sqlite3 ca-certificates locales tzdata && \
+    apt install -y bash sudo curl wget make git fd-find sqlite3 ca-certificates locales tzdata binutils && \
     apt clean all && rm -rf /var/lib/apt/lists && \
     locale-gen $LANG && \
     groupadd -g 500 --system code && \
