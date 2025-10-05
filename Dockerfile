@@ -7,6 +7,21 @@ FROM library/docker:cli AS docker-cli
 FROM library/golang:${GO_VERSION} AS golang
 FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS base
 
+ARG BASE_PACKAGES="\
+    sudo \
+    bash \
+    ca-certificates \
+    locales \
+    tzdata \
+    curl wget \
+    make \
+    git \
+    sqlite3 \
+    fd-find \
+    binutils \
+    bzip2 bsdiff \
+"
+
 COPY --chown=root:root --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker-compose /usr/local/bin/
 COPY --chown=root:root --from=golang /usr/local/go /usr/local/go
 
@@ -26,12 +41,12 @@ RUN \
     echo "${LANG} UTF-8" > /etc/locale.gen && \
     echo "LANG=${LANG}" > /etc/locale.conf && \
     apt update && apt -y full-upgrade && \
-    apt install -y bash sudo curl wget make git fd-find sqlite3 ca-certificates locales tzdata binutils && \
+    apt install -y ${BASE_PACKAGES} && \
     apt clean all && rm -rf /var/lib/apt/lists && \
     locale-gen $LANG && \
     groupadd -g 500 --system code && \
     useradd -u 500 -g 500 --system -s /bin/bash -d /home/code --create-home code && \
-    echo "PS1='\u:\w\$ '" >> /home/code/.bashrc && \
+    echo "PS1='\u:\W \$ '" >> /home/code/.bashrc && \
     echo "code ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/code && \
     mkdir -p "${GOPATH}" /workspaces && \
     chown code:code "${GOPATH}" /workspaces
