@@ -15,8 +15,6 @@ id: ## Output BUILD_ID being used
 .PHONY: debug
 debug: ## Output internal make variables
 	@echo BUILD_ID = $(BUILD_ID)
-	@echo WORKSPACE = $(WORKSPACE)
-	@echo PKG = $(PKG)
 
 ##@ Build
 

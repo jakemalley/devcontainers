@@ -38,7 +38,6 @@ RUN \
     locale-gen $LANG && \
     groupadd -g 500 --system code && \
     useradd -u 500 -g 500 --system -s /usr/bin/zsh -d /home/code --create-home code && \
-    echo "PS1='\u:\W \$ '" >> /home/code/.bashrc && \
     echo "code ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/code && \
     mkdir -p /workspaces && chown code:code /workspaces
 
