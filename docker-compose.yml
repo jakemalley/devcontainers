@@ -5,9 +5,26 @@ services:
     build:
       context: ./base
 
+  tools:
+    image: dev-build-tools:${IMAGE_TAG}
+    build:
+      context: ./tools
+      additional_contexts:
+        builder_base_image: service:base
+
+  tools-go:
+    image:  dev-build-tools-go:${IMAGE_TAG}
+    build:
+      context: ./tools
+      dockerfile: Dockerfile.go
+
   go:
     image: dev-go:${IMAGE_TAG}
     build:
       context: ./go
+      args:
+        GO_VERSION: 1.25.3
       additional_contexts:
         builder_base_image: service:base
+        builder_tools_image: service:tools
+        builder_tools_go_image: service:tools-go
