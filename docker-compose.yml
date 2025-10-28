@@ -1,0 +1,13 @@
+---
+services:
+  base:
+    image: dev-base:${IMAGE_TAG}
+    build:
+      context: ./base
+
+  go:
+    image: dev-go:${IMAGE_TAG}
+    build:
+      context: ./go
+      additional_contexts:
+        builder_base_image: service:base

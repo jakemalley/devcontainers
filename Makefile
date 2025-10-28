@@ -1,7 +1,5 @@
 BUILD_ID := $(shell git rev-parse --short HEAD 2>/dev/null || echo no-commit-id)
 
-IMAGE_NAME := dev-go
-
 .DEFAULT_GOAL := help
 
 ##@ General
@@ -17,7 +15,6 @@ id: ## Output BUILD_ID being used
 .PHONY: debug
 debug: ## Output internal make variables
 	@echo BUILD_ID = $(BUILD_ID)
-	@echo IMAGE_NAME = $(IMAGE_NAME)
 	@echo WORKSPACE = $(WORKSPACE)
 	@echo PKG = $(PKG)
 
@@ -25,14 +22,14 @@ debug: ## Output internal make variables
 
 .PHONY: build
 build: ## Build the devcontainer image
-	docker build -t $(IMAGE_NAME):$(BUILD_ID) .
+	IMAGE_TAG=$(BUILD_ID) docker-compose build
 
 .PHONY: release
 release: build ## Build the devcontainer image and tag it as latest
-	docker tag $(IMAGE_NAME):$(BUILD_ID) $(IMAGE_NAME):latest
+	IMAGE_TAG=latest docker-compose build
 
 ##@ Debug
 
 .PHONY: shell
 shell: ## Run a shell in the image
-	docker run --rm -it $(IMAGE_NAME):$(BUILD_ID) bash
+	docker run --rm -it -u code dev-base:$(BUILD_ID) zsh
