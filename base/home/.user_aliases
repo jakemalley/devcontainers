@@ -1,1 +1,3 @@
 alias t=task
+alias gg='git status'
+bindkey \^U backward-kill-line

@@ -16,4 +16,6 @@ RUN \
       -o /tools/bin/yq && \
     curl -fsSL "https://github.com/protocolbuffers/protobuf/releases/download/v30.2/protoc-30.2-linux-x86_64.zip" \
        -o /tmp/protoc-30.2-linux-x86_64.zip && unzip /tmp/protoc-30.2-linux-x86_64.zip -d /tools && \
+    curl -fsSL "https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_linux_x86_64.tar.gz" | \
+      tar zxf - -C /tools/bin/ grpcurl && \
     chmod +x /tools/bin/*
