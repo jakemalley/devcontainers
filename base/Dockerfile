@@ -7,7 +7,7 @@ FROM ${BASE_IMAGE}:${BASE_IMAGE_TAG} AS base
 ARG BASE_PACKAGES="\
     sudo \
     zsh \
-    neovim \
+    vim \
     ca-certificates \
     locales \
     tzdata \
@@ -18,6 +18,7 @@ ARG BASE_PACKAGES="\
     fd-find \
     binutils \
     bzip2 bsdiff \
+    zip unzip \
 "
 
 ENV \
@@ -35,6 +36,7 @@ RUN \
     apt update && apt -y full-upgrade && \
     apt install -y ${BASE_PACKAGES} && \
     apt clean all && rm -rf /var/lib/apt/lists && \
+    ln -s /usr/bin/fdfind /usr/local/bin/fd && \
     locale-gen $LANG && \
     groupadd -g 500 --system code && \
     useradd -u 500 -g 500 --system -s /usr/bin/zsh -d /home/code --create-home code && \

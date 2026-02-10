@@ -12,5 +12,5 @@ plugins=(z git)
 
 source $ZSH/oh-my-zsh.sh
 
-[[ ! -f ~/.user_aliases ]] || source ~/.user_aliases
+[[ ! -f ~/.zshrc.user ]] || source ~/.zshrc.user
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

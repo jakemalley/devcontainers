@@ -23,8 +23,18 @@ services:
     build:
       context: ./go
       args:
-        GO_VERSION: 1.25.5
+        GO_VERSION: 1.25.6
       additional_contexts:
         builder_base_image: service:base
         builder_tools_image: service:tools
         builder_tools_go_image: service:tools-go
+
+  python:
+    image: dev-python:${IMAGE_TAG}
+    build:
+      context: ./python
+      args:
+        PYTHON_VERSION: "3.14"
+      additional_contexts:
+        builder_base_image: service:base
+        builder_tools_image: service:tools
