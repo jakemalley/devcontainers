@@ -18,6 +18,12 @@ services:
       context: ./tools
       dockerfile: Dockerfile.go
 
+  tools-claude:
+    image: dev-build-tools-claude:${IMAGE_TAG}
+    build:
+      context: ./tools
+      dockerfile: Dockerfile.claude
+
   go:
     image: dev-go:${IMAGE_TAG}
     build:
@@ -28,6 +34,7 @@ services:
         builder_base_image: service:base
         builder_tools_image: service:tools
         builder_tools_go_image: service:tools-go
+        builder_tools_claude_image: service:tools-claude
 
   python:
     image: dev-python:${IMAGE_TAG}
@@ -38,3 +45,4 @@ services:
       additional_contexts:
         builder_base_image: service:base
         builder_tools_image: service:tools
+        builder_tools_claude_image: service:tools-claude

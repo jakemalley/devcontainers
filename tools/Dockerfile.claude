@@ -1,0 +1,11 @@
+FROM library/node:24-slim
+
+RUN npm install -g @anthropic-ai/claude-code
+
+# Replace the npm symlink with a portable wrapper script so
+# COPY --from in downstream images copies a real file, not a
+# dereferenced JS entry-point that breaks require() resolution.
+RUN CLAUDE_BIN=$(readlink -f /usr/local/bin/claude) && \
+    rm /usr/local/bin/claude && \
+    printf '#!/bin/sh\nexec node "%s" "$@"\n' "$CLAUDE_BIN" > /usr/local/bin/claude && \
+    chmod +x /usr/local/bin/claude

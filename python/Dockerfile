@@ -1,8 +1,12 @@
 FROM builder_tools_image AS tools
+FROM builder_tools_claude_image AS tools-claude
 FROM builder_base_image AS base
 
 COPY --chown=root:root --from=tools /tools/include /usr/local/include/
 COPY --chown=root:root --from=tools /tools/bin/* /usr/local/bin/
+COPY --chown=root:root --from=tools-claude /usr/local/bin/node /usr/local/bin/
+COPY --chown=root:root --from=tools-claude /usr/local/lib/node_modules/@anthropic-ai /usr/local/lib/node_modules/@anthropic-ai
+COPY --chown=root:root --from=tools-claude /usr/local/bin/claude /usr/local/bin/
 COPY requirements.txt /requirements.txt
 
 RUN \
