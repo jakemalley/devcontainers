@@ -22,6 +22,10 @@ debug: ## Output internal make variables
 build: ## Build the devcontainer image
 	IMAGE_TAG=$(BUILD_ID) docker-compose build
 
+.PHONY: test
+test: ## Test the devcontainer images using goss
+	./test.sh $(BUILD_ID)
+
 .PHONY: release
 release: build ## Build the devcontainer image and tag it as latest
 	IMAGE_TAG=latest docker-compose build

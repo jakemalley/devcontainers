@@ -1,0 +1,25 @@
+---
+user:
+  code:
+    exists: true
+    uid: 500
+    gid: 500
+    shell: /usr/bin/zsh
+
+file:
+  /home/code/.oh-my-zsh:
+    exists: true
+    filetype: directory
+    owner: code
+
+command:
+  "git --version":
+    exit-status: 0
+  "docker --version":
+    exit-status: 0
+  "zsh --version":
+    exit-status: 0
+  "locale":
+    exit-status: 0
+  "locale | grep LANG=en_GB.UTF-8":
+    exit-status: 0

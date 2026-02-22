@@ -24,6 +24,12 @@ services:
       context: ./tools
       dockerfile: Dockerfile.claude
 
+  tools-goss:
+    image: dev-build-tools-goss:${IMAGE_TAG}
+    build:
+      context: ./tools
+      dockerfile: Dockerfile.goss
+
   go:
     image: dev-go:${IMAGE_TAG}
     build:
