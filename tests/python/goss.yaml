@@ -1,0 +1,31 @@
+---
+# Python toolchain
+command:
+  "python --version":
+    exit-status: 0
+  "uv --version":
+    exit-status: 0
+
+  # Tools (from tools image)
+  "jq --version":
+    exit-status: 0
+  "yq --version":
+    exit-status: 0
+  "fzf --version":
+    exit-status: 0
+  "protoc --version":
+    exit-status: 0
+  "grpcurl --version":
+    exit-status: 0
+  "tailwindcss --help":
+    exit-status: 0
+
+  # Claude (from tools-claude image)
+  "claude --version":
+    exit-status: 0
+
+file:
+  /home/code/venv:
+    exists: true
+    filetype: directory
+    owner: code

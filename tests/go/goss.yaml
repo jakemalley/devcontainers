@@ -1,0 +1,57 @@
+---
+# Go toolchain
+command:
+  "go version":
+    exit-status: 0
+  "gopls version":
+    exit-status: 0
+  "dlv version":
+    exit-status: 0
+  "staticcheck --version":
+    exit-status: 0
+  "gotests -h":
+    exit-status: 0
+  "gomodifytags -h":
+    exit-status: 0
+  "impl -h":
+    exit-status: 2  # prints usage and exits 1 with no args
+  "goplay -h":
+    exit-status: 1
+
+  # Tools (from tools image)
+  "jq --version":
+    exit-status: 0
+  "yq --version":
+    exit-status: 0
+  "fzf --version":
+    exit-status: 0
+  "protoc --version":
+    exit-status: 0
+  "grpcurl --version":
+    exit-status: 0
+  "tailwindcss --help":
+    exit-status: 0
+
+  # Go build tools (from tools-go image)
+  "templ version":
+    exit-status: 0
+  "air -v":
+    exit-status: 0
+  "task --version":
+    exit-status: 0
+  "protoc-gen-go --version":
+    exit-status: 0
+  "protoc-gen-go-grpc --version":
+    exit-status: 0
+
+  # Claude (from tools-claude image)
+  "claude --version":
+    exit-status: 0
+
+file:
+  /usr/local/go/bin/go:
+    exists: true
+  /home/code/go:
+    exists: true
+    filetype: directory
+    owner: code

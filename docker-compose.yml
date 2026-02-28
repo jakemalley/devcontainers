@@ -35,7 +35,7 @@ services:
     build:
       context: ./go
       args:
-        GO_VERSION: 1.25.6
+        GO_VERSION: 1.26.0
       additional_contexts:
         builder_base_image: service:base
         builder_tools_image: service:tools

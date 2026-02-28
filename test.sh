@@ -4,6 +4,12 @@ set -euo pipefail
 TAG="${1:?Usage: $0 <image-tag>}"
 TESTS_DIR="$(cd "$(dirname "$0")" && pwd)/tests"
 GOSS_IMAGE="dev-build-tools-goss:${TAG}"
+
+if ! docker image inspect "${GOSS_IMAGE}" &>/dev/null; then
+    echo "ERROR: goss image '${GOSS_IMAGE}' not found. Run 'make build' first."
+    exit 1
+fi
+
 FAILED=0
 
 for test_dir in "$TESTS_DIR"/*/; do
