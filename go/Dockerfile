@@ -9,9 +9,8 @@ COPY --chown=root:root --from=golang /usr/local/go /usr/local/go
 COPY --chown=root:root --from=tools /tools/include /usr/local/include/
 COPY --chown=root:root --from=tools /tools/bin/* /usr/local/bin/
 COPY --chown=root:root --from=tools-go /go/bin/* /usr/local/bin/
-COPY --chown=root:root --from=tools-claude /usr/local/bin/node /usr/local/bin/
-COPY --chown=root:root --from=tools-claude /usr/local/lib/node_modules/@anthropic-ai /usr/local/lib/node_modules/@anthropic-ai
-COPY --chown=root:root --from=tools-claude /usr/local/bin/claude /usr/local/bin/
+COPY --chown=root:root --from=tools-claude /usr/local/bin /usr/local/bin
+COPY --chown=root:root --from=tools-claude /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 ENV \
     GOPATH=/home/code/go \
