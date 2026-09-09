@@ -28,6 +28,8 @@ services:
     image: dev-build-tools-goss:${IMAGE_TAG}
     build:
       context: ./tools
+      args:
+        GOSS_VERSION: 0.4.10
       dockerfile: Dockerfile.goss
 
   go:

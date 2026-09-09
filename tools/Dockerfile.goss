@@ -1,13 +1,14 @@
 FROM docker:cli as docker-cli
 FROM library/debian:stable-slim
-
+ARG GOSS_VERSION=latest
 COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker-compose /usr/local/bin/
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
   apt update && apt -y install curl
 RUN \
-  curl -L https://github.com/goss-org/goss/releases/latest/download/goss-linux-amd64 -o /usr/local/bin/goss && \
-  curl -L https://github.com/goss-org/goss/releases/latest/download/dgoss -o /usr/local/bin/dgoss && \
+  curl -fsSL https://github.com/goss-org/goss/releases/download/v${GOSS_VERSION}/goss_${GOSS_VERSION}_linux_x86_64.tar.gz | \
+    tar zxf - -C /usr/local/bin/ goss && \
+  curl -fsSL https://github.com/goss-org/goss/releases/download/v${GOSS_VERSION}/dgoss -o /usr/local/bin/dgoss && \
   chmod +rx /usr/local/bin/goss /usr/local/bin/dgoss
 ENV \
   GOSS_FILES_PATH=/tests \

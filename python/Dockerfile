@@ -11,7 +11,7 @@ COPY requirements.txt /requirements.txt
 
 RUN \
   export DEBIAN_FRONTEND=noninteractive && \
-  curl -LsSf https://astral.sh/uv/install.sh -o /tmp/install.sh && \
+  curl -fsSL https://astral.sh/uv/install.sh -o /tmp/install.sh && \
   UV_INSTALL_DIR=/usr/local/bin bash /tmp/install.sh
 
 USER code
