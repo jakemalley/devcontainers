@@ -22,6 +22,10 @@ debug: ## Output internal make variables
 build: ## Build the devcontainer image
 	IMAGE_TAG=$(BUILD_ID) docker-compose build
 
+.PHONY: build-no-cache
+build-no-cache: ## Build the devcontainer image (uses --no-cache)
+	IMAGE_TAG=$(BUILD_ID) docker-compose build --pull --no-cache
+
 .PHONY: test
 test: ## Test the devcontainer images using goss
 	./test.sh $(BUILD_ID)
