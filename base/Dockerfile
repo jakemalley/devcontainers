@@ -19,6 +19,7 @@ ARG BASE_PACKAGES="\
     binutils \
     bzip2 bsdiff \
     zip unzip \
+    procps socat \
 "
 
 ENV \

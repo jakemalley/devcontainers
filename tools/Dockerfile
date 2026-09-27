@@ -15,7 +15,9 @@ RUN \
     curl -fsSL "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_arm64" \
       -o /tools/bin/yq && \
     curl -fsSL "https://github.com/protocolbuffers/protobuf/releases/download/v30.2/protoc-30.2-linux-x86_64.zip" \
-       -o /tmp/protoc-30.2-linux-x86_64.zip && unzip /tmp/protoc-30.2-linux-x86_64.zip -d /tools && \
+      -o /tmp/protoc-30.2-linux-x86_64.zip && unzip /tmp/protoc-30.2-linux-x86_64.zip -d /tools && \
     curl -fsSL "https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_linux_x86_64.tar.gz" | \
       tar zxf - -C /tools/bin/ grpcurl && \
+    curl -fsSL "https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
+      -o /tools/bin/kubectl && \
     find /tools -type f -exec chmod 755 {} +
