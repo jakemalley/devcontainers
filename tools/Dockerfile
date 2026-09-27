@@ -20,4 +20,5 @@ RUN \
       tar zxf - -C /tools/bin/ grpcurl && \
     curl -fsSL "https://dl.k8s.io/release/$(curl -fsSL https://dl.k8s.io/release/stable.txt)/bin/linux/arm64/kubectl" \
       -o /tools/bin/kubectl && \
+    curl -fsSL "https://go.kubebuilder.io/dl/latest/linux/arm64" -o /tools/bin/kubebuilder && \
     find /tools -type f -exec chmod 755 {} +
