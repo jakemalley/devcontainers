@@ -7,8 +7,6 @@ RUN \
 
 RUN \
     mkdir -p /tools/bin /tools/include && \
-    curl -fsSL "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-arm64" \
-      -o /tools/bin/tailwindcss && \
     curl -fsSL "https://github.com/junegunn/fzf/releases/download/v0.57.0/fzf-0.57.0-linux_arm64.tar.gz" | tar zxf - -C /tools/bin/ && \
     curl -fsSL "https://github.com/jqlang/jq/releases/latest/download/jq-linux-amd64" \
       -o /tools/bin/jq && \
